@@ -1,0 +1,26 @@
+# Versão do formato do Docker Compose
+version: '3'
+
+# Definição dos serviços da sua aplicação
+services:
+  # Define um serviço chamado 'web' para sua aplicação Flask
+  web:
+    # Indica que a imagem Docker para este serviço será construída a partir do Dockerfile
+    # localizado no diretório atual (onde este docker-compose.yml está)
+    build: .
+    # Mapeia a porta 5000 do contêiner para a porta 5000 da sua máquina local.
+    # Isso permite que você acesse a aplicação em http://localhost:5000
+    ports:
+      - "5000:5000"
+    # Define variáveis de ambiente dentro do contêiner.
+    # A variável PORT é usada pelo seu app.py e pelo comando CMD do Dockerfile.
+    environment:
+      - PORT=5000
+    # Monta o diretório atual (onde está seu código Flask) dentro do contêiner.
+    # Isso é útil para desenvolvimento, pois qualquer alteração no seu código local
+    # será refletida automaticamente no contêiner (se a aplicação tiver auto-reload, como o Flask em debug mode).
+    # Para Gunicorn, você precisaria de um reinício ou de um watcher de arquivos.
+    volumes:
+      - .:/app
+    # Reinicia o contêiner se ele parar inesperadamente
+    restart: always
