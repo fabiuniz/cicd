@@ -53,11 +53,11 @@ jobs:
           --region ${{ env.REGION }} \
           --platform managed \
           --allow-unauthenticated \
+          --port 5000 \
           --memory 1Gi \
           --cpu 1000m \
           --min-instances 0 \
-          --max-instances 10 \
-          --set-env-vars PORT=5000
+          --max-instances 10 
 
     - name: Output service URL
       run: |
