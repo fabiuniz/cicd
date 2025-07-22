@@ -16,8 +16,5 @@ COPY . .
 # Expõe a porta 5000
 EXPOSE 5000
 
-# Define a variável de ambiente PORT com valor padrão
-ENV PORT=5000
-
 # Comando corrigido para usar a variável PORT do sistema
 CMD gunicorn --bind 0.0.0.0:$PORT app:app --workers 1 --timeout 120
