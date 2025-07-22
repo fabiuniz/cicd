@@ -1,0 +1,47 @@
+# .github/workflows/deploy-heroku.yml
+name: Deploy Flask App to Heroku
+
+on:
+  push:
+    branches:
+      - heroku-deploy # Este workflow será disparado apenas por pushes na branch 'heroku-deploy'
+  pull_request:
+    branches:
+      - heroku-deploy
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: 
+      name: production-heroku 
+    env: 
+      DEPLOY_PLATFORM: Heroku
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to Heroku Container Registry
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      run: heroku container:login
+
+    - name: Build and push Docker image to Heroku
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      run: |
+        docker build -t registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+        docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+
+    - name: Release Heroku app
+      env:
+        HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      run: heroku container:release web -a ${{ secrets.HEROKU_APP_NAME }}
+
+    - name: Get Heroku App URL
+      env:
+        HEROKU_APP_NAME: ${{ secrets.HEROKU_APP_NAME }}
+      run: |
+        HEROKU_APP_URL="https://${{ secrets.HEROKU_APP_NAME }}.herokuapp.com"
+        echo "🎉 Aplicação Heroku deployada em: $HEROKU_APP_URL"

@@ -346,6 +346,15 @@ gcloud iam service-accounts delete github-actions-sa@$PROJECT_ID.iam.gserviceacc
 
 ---
 
+## 🔍 Deploy do Pipeline CI/CD -  Actions GitHub
+```bash
+git checkout gcp-deploy
+git merge <sua-branch-de-trabalho>
+git push origin gcp-deploy
+```
+
+---
+
 ## 🔍 Verificação do Deploy
 
 ### Via Google Cloud Console:

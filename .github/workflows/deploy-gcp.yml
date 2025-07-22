@@ -3,10 +3,10 @@ name: Deploy Flask Dockerized App to Google Cloud Run
 on:
   push:
     branches:
-      - main
+      - gcp-deploy
   pull_request:
     branches:
-      - main
+      - gcp-deploy
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
@@ -17,7 +17,10 @@ env:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+    environment: 
+      name: production-gcp 
+    env: 
+      DEPLOY_PLATFORM: Google Cloud Run 
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
