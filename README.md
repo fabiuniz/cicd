@@ -5,27 +5,32 @@
   path_hook: hookfigma.hook18
 -->
 
-# 🚀 Aplicação Flask Dockerizada com CI/CD GitHub Actions - GCP/Heroku
+# 🚀 Aplicação Flask Dockerizada com CI/CD - Google Cloud Run & Heroku
 
 <div align="center">
   <img src="images/appdockercicd.png" alt="Aplicação Flask Dockerizada com CI/CD"/>
   
   ![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)  
   ![Docker](https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=Docker&logoColor=white)
+  ![Google Cloud](https://img.shields.io/badge/Google%20Cloud-4285F4.svg?style=flat&logo=GoogleCloud&logoColor=white)
+  ![Heroku](https://img.shields.io/badge/Heroku-430098.svg?style=flat&logo=Heroku&logoColor=white)
   ![License](https://img.shields.io/badge/license-MIT-green.svg) 
-  
 </div>
 
 ## 📖 Sobre o Projeto
 
-Este projeto implementa uma aplicação web moderna em Flask com frontend estiloso, empacotada em Docker e com pipeline de CI/CD totalmente automatizado usando GitHub Actions para deploy no Google Cloud Run.
+Este projeto implementa uma aplicação web moderna em Flask com frontend estiloso, empacotada em Docker e com pipelines de CI/CD totalmente automatizados usando GitHub Actions para deploy em **duas plataformas**:
+
+- 🌐 **Google Cloud Run** - Escalabilidade serverless
+- 🔥 **Heroku** - Simplicidade e rapidez
 
 ### ✨ Características:
 - **Frontend Responsivo** com design glassmorphism e animações suaves
-- **Deploy Automatizado** via GitHub Actions
+- **Deploy Automatizado** via GitHub Actions para ambas plataformas
 - **Containerização** com Docker otimizado
 - **Monitoramento** com health checks
-- **Escalabilidade** automática no Cloud Run
+- **Escalabilidade** automática
+- **Multi-plataforma** - GCP e Heroku
 
 ---
 
@@ -40,54 +45,51 @@ A aplicação exibe:
 
 ---
 
-## 🎨 Recursos do Frontend
+## 🌐 Plataformas de Deploy Suportadas
 
-### Design Moderno:
-- **Glassmorphism**: Efeito de vidro translúcido
-- **Gradientes**: Fundo com degradê elegante  
-- **Animações**: Transições suaves e fade-in
-- **Responsivo**: Adaptado para mobile e desktop
-- **Tipografia**: Fontes modernas e legíveis
-
-### Funcionalidades:
-- ⏰ **Relógio em Tempo Real**: Hora de São Paulo
-- 📅 **Data Formatada**: Em português brasileiro
-- 🌍 **Timezone Info**: Fuso horário detalhado
-- 💚 **Status Indicator**: Confirmação de deploy
-- 📱 **Mobile First**: Design otimizado para celulares
+| Plataforma | Branch | Workflow | Vantagens |
+|------------|--------|----------|-----------|
+| **🌐 Google Cloud Run** | `gcp-deploy` | `deploy-gcp.yml` | Escalabilidade serverless, tier gratuito generoso |
+| **🔥 Heroku** | `heroku-deploy` | `deploy-heroku.yml` | Simplicidade, deploy rápido |
 
 ---
+
 ## 📁 Estrutura do Projeto
 
 ```
 my-flask-app-docker/
-├── app.py                    # 🐍 Aplicação Flask principal
-├── requirements.txt          # 📦 Dependências Python
-├── Dockerfile               # 🐳 Configuração Docker
-├── README.md               # 📖 Documentação
+├── app.py                         # 🐍 Aplicação Flask principal
+├── requirements.txt               # 📦 Dependências Python
+├── Dockerfile                     # 🐳 Configuração Docker
+├── docker-compose.yml            # 🐳 Desenvolvimento local
+├── README.md                     # 📖 Documentação
 └── .github/
     └── workflows/
-        └── deploy.yml      # ⚙️ Pipeline CI/CD
+        ├── deploy-gcp.yml        # ⚙️ Pipeline CI/CD - Google Cloud
+        └── deploy-heroku.yml     # ⚙️ Pipeline CI/CD - Heroku
 ```
 
 ---
 
 ## 🔧 Pré-requisitos
 
-### ☁️ Google Cloud Platform (GCP)
-- Conta ativa com billing habilitado
-- Projeto criado (anote o `PROJECT_ID`)
+### Para Google Cloud Platform (GCP)
+- ☁️ Conta Google Cloud ativa com billing habilitado
+- 🔧 Projeto criado (anote o `PROJECT_ID`)
 
-### 🐙 GitHub
-- Repositório criado
-- Acesso para configurar secrets
+### Para Heroku
+- 🔥 Conta Heroku (gratuita ou paga)
+- 🔧 App Heroku criado
+- 🔑 API Key do Heroku
 
-### 💻 Desenvolvimento Local (Opcional)
-- Docker Desktop
-- Python 3.9+
-- Git
+### Para ambas plataformas
+- 🐙 Repositório GitHub
+- 💻 Docker Desktop (desenvolvimento local)
+- 🐍 Python 3.9+ (desenvolvimento local)
 
 ---
+
+# 🌐 CONFIGURAÇÃO GOOGLE CLOUD RUN
 
 ## 📋 Como Obter Variáveis do Google Cloud Platform
 
@@ -130,15 +132,6 @@ us-east1        # Virgínia do Norte (boa latência)
 us-central1     # Iowa (padrão em muitos tutoriais)
 ```
 
-**Ver todas as regiões disponíveis:**
-```bash
-# Listar regiões do Cloud Run
-gcloud run regions list
-
-# Listar todas as regiões do GCP
-gcloud compute regions list
-```
-
 #### **3️⃣ SERVICE_ACCOUNT_EMAIL - Email da Conta de Serviço**
 
 **Após criar a Service Account:**
@@ -149,11 +142,6 @@ gcloud iam service-accounts list
 # Formato padrão será:
 # github-actions-sa@SEU_PROJECT_ID.iam.gserviceaccount.com
 ```
-
-**No Console Web:**
-1. **IAM & Admin** → **Service Accounts**
-2. Encontre a conta criada (ex: "github-actions-sa")
-3. O email estará na coluna **Email** ✅
 
 #### **4️⃣ ARTIFACT_REGISTRY_URL - URL do Repositório**
 
@@ -166,18 +154,7 @@ REGION-docker.pkg.dev/PROJECT_ID/REPOSITORY_NAME
 ```
 us-central1-docker.pkg.dev/meu-projeto-123/my-flask-app
 ```
-
-**Verificar no terminal:**
-```bash
-# Listar repositórios
-gcloud artifacts repositories list
-
-# Ver detalhes de um repositório específico
-gcloud artifacts repositories describe REPOSITORY_NAME \
-  --location=REGION
-```
-
-### 📊 **Script para definição e Coleta de Variáveis**
+## 📊 **Configuração GCP por Script para definição e Coleta de Variáveis**
 
 Cole este script no **Google Cloud Shell** para obter todas as informações:
 
@@ -217,7 +194,7 @@ echo "1. Use PROJECT_ID como GitHub Secret: GCP_PROJECT_ID"
 echo "2. Use as outras variáveis no arquivo .github/workflows/deploy.yml"
 echo "=================================="
 ```
-### 📊 **Forma manual para definição**
+### 📊 **Forma manual para definição Google Cloud Shell**
 ```bash
 
 🌱 Definir variáveis (SUBSTITUA SEU_PROJECT_ID)
@@ -230,57 +207,57 @@ echo "Projeto atual: $(gcloud config get-value project)"
 ```
 ---
 
-## ⚡ Configuração Rápida
+## ⚡ Configuração Rápida GCP
 
 ### 1️⃣ **Configurar GCP (Cloud Shell)**
 
 ```bash
 
-🔧 Listar projetos disponíveis e identificar projeto ativo
+# 🔧 Listar projetos disponíveis e identificar projeto ativo
 gcloud projects list
 gcloud config get-value project
 
-✅ Configurar projeto
+# ✅ Configurar projeto
 gcloud config set project $PROJECT_ID
 
-🔧 Verificar APIs habilitadas
+# 🔧 Verificar APIs habilitadas
 gcloud services list \
   --enabled \
   --filter="name:(run.googleapis.com OR artifactregistry.googleapis.com)" \
   --format="value(name)"
 
-✅ Habilitar APIs necessárias
+# ✅ Habilitar APIs necessárias
 gcloud services enable run.googleapis.com \
   artifactregistry.googleapis.com \
   iam.googleapis.com \
   cloudbuild.googleapis.com
 
-🔧 Verificar Repositório Artifact Registry existe
+# 🔧 Verificar Repositório Artifact Registry existe
 gcloud artifacts repositories list --format="table(name,location)"
 
-✅ Criar repositório Artifact Registry
+# ✅ Criar repositório Artifact Registry
 gcloud artifacts repositories create $REPOSITORY_NAME \
   --repository-format=docker \
   --location=$REGION \
   --description="Repositório Docker para $REPOSITORY_NAME"
 
-🔧 Verificar todas Service Accounts que exitem
+# 🔧 Verificar todas Service Accounts que exitem
 gcloud iam service-accounts list
 
 🔧 Verificar Service Account existe
 gcloud iam service-accounts list --filter="email:github-actions-sa@*"
 
-✅ Criar Service Account
+# ✅ Criar Service Account
 gcloud iam service-accounts create $SERVICE_ACCOUNT_NAME \
   --display-name="Service Account para GitHub Actions"
 
-🔧 Verificar Permissões da Service Account
+# 🔧 Verificar Permissões da Service Account
 gcloud projects get-iam-policy $(gcloud config get-value project) \
   --flatten="bindings[].members" \
   --filter="bindings.members:serviceAccount:github-actions-sa@*" \
   --format="table(bindings.role)"
 
-✅ Conceder permissões
+# ✅ Conceder permissões
 gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/run.admin"
@@ -293,36 +270,89 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountUser"
 
-✅ Gerar chave da Service Account
+# ✅ Gerar chave da Service Account
 gcloud iam service-accounts keys create sa-key.json \
   --iam-account="$SERVICE_ACCOUNT_NAME@$PROJECT_ID.iam.gserviceaccount.com"
 
-✅ Exibir conteúdo para copiar
+# ✅ Exibir conteúdo para copiar
 echo "=== COPIE TODO O CONTEÚDO ABAIXO ==="
 cat sa-key.json
 ```
 
-### 2️⃣ **Configurar GitHub Secrets**
+### 2️⃣ **Configurar GitHub Secrets para GCP**
 
 No seu repositório GitHub:
 
 1. **Settings** → **Secrets and variables** → **Actions**
 2. **New repository secret** e crie:
 
-#### 🔑 **Secret 1:**
 ```
+# 🔑 **Secrets 1 para GCP:**
 Name: GCP_SA_KEY
 Value: [Cole todo o JSON do arquivo sa-key.json aqui]
-```
 
-#### 🆔 **Secret 2:**
-```
+# 🆔 **Secret 2:**
 Name: GCP_PROJECT_ID  
 Value: [Seu PROJECT_ID do GCP]
 ```
 
-### 3️⃣ **Deploy Automático**
+---
 
+# 🔥 CONFIGURAÇÃO HEROKU
+
+## 📋 Como Obter Variáveis do Heroku
+
+### 1️⃣ **Criar Conta e App no Heroku**
+
+1. Acesse [Heroku](https://www.heroku.com) e crie uma conta
+2. No Dashboard, clique em **"New"** → **"Create new app"**
+3. Escolha um nome único para seu app (ex: `meu-flask-app-123`)
+4. Selecione uma região (preferencialmente **United States**)
+5. Clique em **"Create app"**
+
+### 2️⃣ **Obter API Key do Heroku**
+
+**Método 1: Dashboard Web**
+1. No Heroku Dashboard, clique no seu **avatar** (canto superior direito)
+2. Clique em **"Account settings"**
+3. Na seção **"API Key"**, clique em **"Reveal"**
+4. Copie a chave exibida ✅
+
+**Método 2: Heroku CLI**
+```bash
+# Instalar Heroku CLI (se necessário)
+# No Windows: https://devcenter.heroku.com/articles/heroku-cli
+# No Mac: brew tap heroku/brew && brew install heroku
+# No Ubuntu: sudo snap install --classic heroku
+
+# Fazer login
+heroku login
+
+# Exibir API key
+heroku auth:token
+```
+
+### 3️⃣ **Configurar GitHub Secrets para Heroku**
+
+No seu repositório GitHub:
+
+1. **Settings** → **Secrets and variables** → **Actions**
+2. **New repository secret** e crie:
+
+#### 🔑 **Secrets para Heroku:**
+```
+Name: HEROKU_API_KEY
+Value: [Sua API Key do Heroku]
+
+Name: HEROKU_APP_NAME  
+Value: [Nome do seu app no Heroku - ex: meu-flask-app-123]
+```
+
+---
+
+## 🚀 Deploy Automático
+
+### Para Google Cloud Run:
 ```bash
 # Clone seu repositório
 git clone <URL_DO_SEU_REPOSITORIO>
@@ -331,54 +361,108 @@ cd my-flask-app-docker
 # Adicione os arquivos do projeto
 git add .
 git commit -m "🚀 Initial deploy to GCP Cloud Run"
-git push origin main
+
+# Push para branch específica do GCP
+git checkout -b gcp-deploy
+git push origin gcp-deploy
 ```
 
-🎉 **Pronto!** O GitHub Actions será executado automaticamente e fará o deploy.
+### Para Heroku:
+```bash
+# No mesmo repositório
+git checkout -b heroku-deploy
+git push origin heroku-deploy
+```
+
+🎉 **Pronto!** Os GitHub Actions serão executados automaticamente para cada plataforma.
 
 ---
 
-## 🧹 Limpeza de Recursos
+## 🔄 Workflows e Branches
 
-Para evitar custos desnecessários:
+### 🌐 **Google Cloud Run Workflow**
+- **Branch**: `gcp-deploy`
+- **Arquivo**: `.github/workflows/deploy-gcp.yml`
+- **Trigger**: Push ou PR para `gcp-deploy`
+
+### 🔥 **Heroku Workflow**
+- **Branch**: `heroku-deploy` 
+- **Arquivo**: `.github/workflows/deploy-heroku.yml`
+- **Trigger**: Push ou PR para `heroku-deploy`
+
+### 🔄 **Fluxo de Desenvolvimento Recomendado**
 
 ```bash
-# Deletar serviço Cloud Run
-gcloud run services delete my-flask-app --region=us-central1
+# Desenvolvimento na branch main
+git checkout main
+# ... fazer alterações ...
+git add .
+git commit -m "✨ Nova funcionalidade"
 
-# Deletar repositório Artifact Registry  
-gcloud artifacts repositories delete my-flask-app --location=us-central1
+# Deploy para Heroku (mais rápido para testes)
+git checkout heroku-deploy
+git merge main
+git push origin heroku-deploy
 
-# Deletar service account
-gcloud iam service-accounts delete github-actions-sa@$PROJECT_ID.iam.gserviceaccount.com
-```
-
----
-
-## 🔍 Deploy do Pipeline CI/CD -  Actions GitHub
-```bash
-git checkout gcp-deploy
-git merge <sua-branch-de-trabalho>
+# Deploy para GCP (após validação)
+git checkout gcp-deploy  
+git merge main
 git push origin gcp-deploy
 ```
 
 ---
 
-## 🔍 Verificação do Deploy
+## 🔍 Verificação dos Deploys
 
-### Via Google Cloud Console:
-1. Acesse [Cloud Run](https://console.cloud.google.com/run)
-2. Encontre o serviço `my-flask-app`
-3. Clique na URL fornecida
-
-### Via Command Line:
+### 🌐 **Google Cloud Run**
 ```bash
-# Listar serviços
+# Via Command Line
 gcloud run services list --region=us-central1
 
-# Ver logs
-gcloud run services logs read my-flask-app --region=us-central1
+# Via Console
+# https://console.cloud.google.com/run
 ```
+
+### 🔥 **Heroku**
+```bash
+# Via Heroku CLI
+heroku apps:info -a SEU_APP_NAME
+
+# Via Dashboard
+# https://dashboard.heroku.com/apps/SEU_APP_NAME
+```
+
+---
+
+## 📊 Comparação de Plataformas
+
+| Aspecto | Google Cloud Run | Heroku |
+|---------|------------------|--------|
+| **🚀 Facilidade** | Moderada | Alta |
+| **💰 Custo Inicial** | Gratuito (tier generoso) | Gratuito limitado |
+| **📈 Escalabilidade** | Excelente (0-1000+ instâncias) | Boa |
+| **⚡ Cold Start** | ~1-3 segundos | ~10-30 segundos |
+| **🔧 Configuração** | Mais complexa | Simples |
+| **🌍 Regiões** | Mundial | Limitada |
+| **📊 Monitoramento** | Avançado (Cloud Monitoring) | Básico |
+| **💾 Persistência** | Externa (Cloud Storage) | Add-ons |
+
+---
+
+## 💰 Custos e Limites
+
+### 🌐 **Google Cloud Run (Tier Gratuito)**
+- ✅ **2 milhões** de requisições/mês
+- ✅ **180.000** vCPU-segundos/mês  
+- ✅ **360.000** GiB-segundos de memória/mês
+- ✅ **1 GB** de largura de banda/mês
+- 🎁 **$300** em créditos para novos usuários
+
+### 🔥 **Heroku (Planos)**
+- 🆓 **Free Tier**: Não disponível para novos apps
+- 💵 **Eco Dyno**: $5/mês (dorme após 30 min de inatividade)
+- 💰 **Basic Dyno**: $7/mês (não dorme)
+- 🚀 **Standard**: $25/mês (recursos avançados)
 
 ---
 
@@ -406,128 +490,143 @@ docker build -t my-flask-app .
 docker run -p 5000:5000 -e PORT=5000 my-flask-app
 ```
 
+### Executar com Docker Compose:
+```bash
+# Iniciar todos os serviços
+docker-compose up
+
+# Executar em background
+docker-compose up -d
+
+# Parar serviços
+docker-compose down
+```
+
 Acesse: `http://localhost:5000`
 
 ---
 
 ## 📋 Variáveis do Projeto
 
+### 🌐 **Google Cloud Run**
 | Variável | Tipo | Onde Configurar | Exemplo |
 |----------|------|-----------------|---------|
 | `GCP_SA_KEY` | GitHub Secret | Repo Settings | `{json completo}` |
 | `GCP_PROJECT_ID` | GitHub Secret | Repo Settings | `meu-projeto-123` |
-| `REGION` | Workflow | `.github/workflows/deploy.yml` | `us-central1` |
-| `SERVICE_NAME` | Workflow | `.github/workflows/deploy.yml` | `my-flask-app` |
-| `REPOSITORY_NAME` | Workflow | `.github/workflows/deploy.yml` | `my-flask-app` |
+| `REGION` | Workflow | `deploy-gcp.yml` | `us-central1` |
+| `SERVICE_NAME` | Workflow | `deploy-gcp.yml` | `my-flask-app` |
+
+### 🔥 **Heroku**
+| Variável | Tipo | Onde Configurar | Exemplo |
+|----------|------|-----------------|---------|
+| `HEROKU_API_KEY` | GitHub Secret | Repo Settings | `abc123...` |
+| `HEROKU_APP_NAME` | GitHub Secret | Repo Settings | `meu-flask-app-123` |
 
 ---
 
-
 ## 🔧 Resolução de Problemas
 
-### ❌ **Erro: "Permission Denied"**
+### ❌ **Erros Comuns - Google Cloud**
+
+**"Permission Denied"**
 ```bash
 # Verificar permissões da service account
 gcloud projects get-iam-policy $PROJECT_ID \
-  --format="table(bindings.role)" \
   --filter="bindings.members:serviceAccount:github-actions-sa@$PROJECT_ID.iam.gserviceaccount.com"
 ```
 
-### ❌ **Erro: "Repository Not Found"**
+**"Repository Not Found"**
 ```bash
 # Verificar se repositório existe
 gcloud artifacts repositories list --location=us-central1
 ```
 
-### ❌ **Erro: "API Not Enabled"**
+**"API Not Enabled"**
 ```bash
 # Verificar APIs habilitadas
 gcloud services list --enabled --filter="name:(run.googleapis.com OR artifactregistry.googleapis.com)"
 ```
 
-### ❌ **Build Failed**
-- Verifique se todos os arquivos estão no repositório
-- Confirme se os secrets estão configurados corretamente
-- Veja os logs no GitHub Actions
+### ❌ **Erros Comuns - Heroku**
 
-### ⚠️ **Problemas com Variáveis do GCP**
+**"Invalid credentials"**
+- Verifique se o `HEROKU_API_KEY` está correto
+- Gere uma nova API Key se necessário
 
-**Erro: "Project not found"**
+**"App not found"**
+- Verifique se o `HEROKU_APP_NAME` está correto
+- Confirme se o app existe no Dashboard do Heroku
+
+**"Build failed"**
+- Verifique os logs no GitHub Actions
+- Teste o build localmente: `docker build -t test .`
+
+**"Release failed"**
 ```bash
-
-# Selecionar projeto correto
-gcloud config set project SEU_PROJECT_ID_CORRETO
+# Verificar logs do Heroku
+heroku logs --tail -a SEU_APP_NAME
 ```
 
-**Erro: "Service account not found"**
+### 🔄 **Problemas de Sincronização entre Branches**
+
 ```bash
+# Sincronizar branches após alterações
+git checkout main
+git pull origin main
 
-# Recriar se necessário
-gcloud iam service-accounts create github-actions-sa \
-  --display-name="GitHub Actions Service Account"
-```
+# Atualizar branch do Heroku
+git checkout heroku-deploy
+git merge main
+git push origin heroku-deploy
 
-**Erro: "Repository not found"**
-```bash
-# Verificar repositórios existentes
-gcloud artifacts repositories list
-
-# Criar repositório se necessário
-gcloud artifacts repositories create my-flask-app \
-  --repository-format=docker \
-  --location=us-central1
+# Atualizar branch do GCP
+git checkout gcp-deploy
+git merge main
+git push origin gcp-deploy
 ```
 
 ---
 
-## 💰 Custos e Limites Gratuitos
+## 🧹 Limpeza de Recursos
 
-### Google Cloud Run (Tier Gratuito):
-- ✅ **2 milhões** de requisições/mês
-- ✅ **180.000** vCPU-segundos/mês  
-- ✅ **360.000** GiB-segundos de memória/mês
-- ✅ **1 GB** de largura de banda/mês
+### 🌐 **Google Cloud**
+```bash
+# Deletar serviço Cloud Run
+gcloud run services delete my-flask-app --region=us-central1
 
-### Google Cloud (Novos Usuários):
-- 🎁 **$300 em créditos** para 90 dias
-- 🆓 **Always Free** tier para sempre
+# Deletar repositório Artifact Registry  
+gcloud artifacts repositories delete my-flask-app --location=us-central1
 
----
+# Deletar service account
+gcloud iam service-accounts delete github-actions-sa@$PROJECT_ID.iam.gserviceaccount.com
+```
 
+### 🔥 **Heroku**
+```bash
+# Via CLI
+heroku apps:destroy SEU_APP_NAME
 
-## 🏗️ Pipeline CI/CD
-
-### O que acontece no deploy:
-1. 🔍 **Checkout**: Baixa código do repositório
-2. 🔐 **Auth**: Autentica no Google Cloud
-3. 🐳 **Build**: Constrói imagem Docker
-4. 📤 **Push**: Envia para Artifact Registry
-5. 🚀 **Deploy**: Atualiza serviço no Cloud Run
-6. ✅ **URL**: Exibe URL da aplicação
-
-### Triggers:
-- ✅ Push para branch `main`
-- ✅ Pull Request para `main`
+# Via Dashboard
+# Apps → Settings → Delete app
+```
 
 ---
 
-## 💡 **Dicas Importantes**
+## 📚 Documentação e Recursos
 
-### **✅ Boas Práticas:**
-- **Sempre use** PROJECT_ID, nunca o nome do projeto
-- **Mantenha consistência** nos nomes de repositório e serviço
-- **Escolha uma região** e use sempre a mesma
-- **Documente** as variáveis escolhidas para sua equipe
+### 🌐 **Google Cloud**
+- 📖 [Cloud Run Documentation](https://cloud.google.com/run/docs)
+- 💬 [Google Cloud Community](https://cloud.google.com/community)
+- 🔧 [GitHub Actions for Google Cloud](https://github.com/google-github-actions)
 
-### **🔒 Segurança:**
-- **Nunca** exponha a chave JSON da service account
-- **Use** GitHub Secrets para informações sensíveis
-- **Limite** permissões da service account ao mínimo necessário
+### 🔥 **Heroku**
+- 📖 [Heroku Dev Center](https://devcenter.heroku.com/)
+- 🐳 [Container Registry & Runtime](https://devcenter.heroku.com/articles/container-registry-and-runtime)
+- 🔧 [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
-### **💰 Custos:**
-- **Prefira** regiões próximas para reduzir latência
-- **Monitore** o uso no Google Cloud Console
-- **Use** tier gratuito sempre que possível
+### 🐙 **GitHub Actions**
+- 📖 [GitHub Actions Documentation](https://docs.github.com/en/actions)
+- 🔐 [Encrypted Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets)
 
 ---
 
@@ -554,21 +653,32 @@ Este projeto está sob licença MIT. Veja o arquivo [LICENSE](LICENSE) para deta
 ### Problemas Comuns:
 - 📖 Consulte a seção "Resolução de Problemas"
 - 🔍 Veja os logs no GitHub Actions
-- 📊 Monitore no Google Cloud Console
+- 📊 Monitore nos consoles das respectivas plataformas
 
 ### Precisa de Ajuda?
 - 🐛 Abra uma [Issue](../../issues)
 - 💬 Inicie uma [Discussion](../../discussions)
 - 📧 Entre em contato através do GitHub
-- 📖 **Documentação oficial**: [Google Cloud Docs](https://cloud.google.com/docs)
-- 💬 **Community**: [Google Cloud Community](https://cloud.google.com/community)
-- 🆘 **Stack Overflow**: Tag `google-cloud-platform`
 
 ---
 
-**🎉 Projeto criado com Flask + Docker + GitHub Actions + Google Cloud Run**
+**🎉 Projeto criado com Flask + Docker + GitHub Actions + Google Cloud Run + Heroku**
 
-*Desenvolvido com ❤️ para demonstrar CI/CD moderno e eficiente*
+---
+
+## 🚀 Quick Start
+
+### Para começar rapidamente:
+
+1. **Clone o repositório**
+2. **Escolha sua plataforma preferida** (GCP ou Heroku)
+3. **Configure os secrets** correspondentes no GitHub
+4. **Faça push** para a branch correta:
+   - `gcp-deploy` para Google Cloud Run
+   - `heroku-deploy` para Heroku
+5. **Acompanhe o deploy** nas Actions do GitHub
+
+✨ **Tip**: Para máxima compatibilidade, teste primeiro no Heroku (mais simples) e depois migre para GCP (mais escalável).
 
 ## 👨‍💻 Autor
 
