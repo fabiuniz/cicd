@@ -7,6 +7,16 @@
 
 # 🚀 Aplicação Flask Dockerizada com CI/CD GitHub Actions - GCP/Heroku
 
+<div align="center">
+  <img src="images/appdockercicd.png" alt="Aplicação Flask Dockerizada com CI/CD"/>
+  
+  ![Python](https://img.shields.io/badge/python-v3.9+-blue.svg)  
+  ![Docker](https://img.shields.io/badge/Docker-2496ED.svg?style=flat&logo=Docker&logoColor=white)
+  ![License](https://img.shields.io/badge/license-MIT-green.svg)
+  
+  **Uma solução completa para gerenciamento educacional desenvolvida durante a Imersão DevOps da Alura**
+</div>
+
 ## 📖 Sobre o Projeto
 
 Este projeto implementa uma aplicação web moderna em Flask com frontend estiloso, empacotada em Docker e com pipeline de CI/CD totalmente automatizado usando GitHub Actions para deploy no Google Cloud Run.
