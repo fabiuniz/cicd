@@ -1,11 +1,11 @@
 <!-- 
   Tags: DevOps
-  Label: ⚙️ Dockerizada com CI/CD Automatizado.
+  Label: ⚙️ GCP/Heroku Docker - GitHub Actions.
   Description: Aplicação Flask Dockerizada com CI/CD Automatizado
   path_hook: hookfigma.hook18
 -->
 
-# 🚀 Aplicação Flask Dockerizada com CI/CD Automatizado
+# 🚀 Aplicação Flask Dockerizada com CI/CD GitHub Actions - GCP/Heroku
 
 ## 📖 Sobre o Projeto
 
