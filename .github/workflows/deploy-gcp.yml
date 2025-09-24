@@ -7,7 +7,12 @@ on:
   pull_request:
     branches:
       - gcp-deploy
-
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: 'Motivo da execução manual (opcional)'
+        required: false
+        default: 'Execução manual'
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
   REGION: us-central1
