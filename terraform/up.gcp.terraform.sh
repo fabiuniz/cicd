@@ -22,7 +22,7 @@ gcloud config get-value project
 # --- 3. PROVISIONAMENTO DA INFRAESTRUTURA (PARCIAL) ---
 
 # Navega para o diretório do Terraform
-cd /home/userlnx/docker/script_docker/cicd/terraform
+cd terraform
 
 # Inicializa (Correto)
 terraform init
@@ -32,7 +32,6 @@ terraform init
 terraform apply -auto-approve -var="project_id=${PROJECT_ID}" -var="region=${REGION}" -var="service_name=${SERVICE_NAME}"
 
 # ----------------------------------------------------------------------
-# --- 3.5. CORREÇÃO DE PERMISSÃO IAM (CRUCIAL) ---
 # Adiciona a permissão para que o Cloud Run possa puxar imagens do Artifact Registry
 # ----------------------------------------------------------------------
 

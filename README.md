@@ -1,9 +1,9 @@
 <!-- 
-  Tags: DevOps
+  Tags: DevOps,Iac
   Label: ⚙️ GCP/Heroku Docker - GitHub Actions.
   Description:⭐ Aplicação Flask Dockerizada com CI/CD Automatizado
   technical_requirement: Python, Dash, Plotly, pandas, gunicorn, Docker, Docker Compose, CSV, Power BI, Git, Vmlinuxd, MySQL, SSL, Bash Scripting, Debian 12, Hyper-V, WSL2, SSH, Java 21, Spring Boot, Spring WebFlux, Google Gemini API, Project Lombok, Jackson, Maven, Linux, Angular 17, Java 17, Nginx, REST API, Multi-stage builds, TypeScript, Node.js, Laravel, PHP 8.x, Cloud Run, Cloud SQL, Artifact Registry, GitHub Actions, CI/CD, Blade, Django, PostgreSQL, Django REST Framework, JWT, OAuth2, TDD, Agile, Scrum, Kanban, Flask, Heroku, NLP, JPA, SQL, SRE, IaC, Cloud Computing, GitHub, GitHub Actions
-  path_hook: hookfigma.hook18
+  path_hook: hookfigma.hook18,hookfigma.hook20
 -->
 
 # 🚀 Aplicação Flask Dockerizada com CI/CD - Google Cloud Run & Heroku
